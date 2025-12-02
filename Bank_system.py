@@ -13,12 +13,14 @@ Let's move to the real code.
 '''
 
 import random
-
+import time
 # Function to make new bank account.
+
+path = "C:\\Users\\HP\\Desktop\\Coding\\Python\\Bank sys\\"
 def new_account():
     acc_num_list = []
     acc_name_list = []
-    with open(f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\Bank_details.txt","r") as bsr:
+    with open(path+f"Bank_Details.txt","r") as bsr:
         acc_details = bsr.read().split()
     for i in range(len(acc_details)):
         if i%2==0:
@@ -26,26 +28,30 @@ def new_account():
         else:
             acc_name_list.append(acc_details[i])
 
-    user_name = input("Name: ").strip().upper()
-    user_dob = input("Date Of Birth(DD/MM/YYYY): ").strip()
-    user_father_name = input("Father's name: ").strip().upper()
-    user_mother_name = input("Mother's name: ").strip().upper()
-    user_money_deposit = int(input("Deposit min Rs. 1000: "))
-    print(f"your account number is {bank+acc_num}.")
-    if user_name not in acc_name_list:
-        with open(f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\{bank+acc_num}.txt","a") as an:
-            an.write(f"Name: {user_name}\nDOB: {user_dob}\nFather's name: {user_father_name}\nMother's name: {user_mother_name} \nBank Account Number: {bank+acc_num}\nAccount Balanace: {user_money_deposit}")
-        with open(f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\Bank_details.txt","a") as bs:
-            bs.write(f"{bank+acc_num} {user_name} ")
-    else:
-        print(f"{user_name} already have an account in our bank.")
+    try:
+        user_name = input("\n\tName: ").strip().upper()
+        user_dob = input("\tDate Of Birth(DD/MM/YYYY): ").strip()
+        user_father_name = input("\tFather's name: ").strip().upper()
+        user_mother_name = input("\tMother's name: ").strip().upper()
+        user_money_deposit = int(input("\tDeposit min Rs. 1000: "))
+        if user_name not in acc_name_list:
+            time.sleep(0.5)
+            print(f"\n\tYour account number is {bank+acc_num}.")
+            with open(path+f"{bank+acc_num}.txt","a") as an:
+                an.write(f"Name: {user_name}\nDOB: {user_dob}\nFather's name: {user_father_name}\nMother's name: {user_mother_name} \nBank Account Number: {bank+acc_num}\nAccount Balance: {user_money_deposit}")
+            with open(path+f"Bank_Details.txt","a") as bs:
+                bs.write(f"{bank+acc_num} {user_name} ")
+        else:
+            print(f"\n\t{user_name} already have an account in our bank.\n")
+    except ValueError:
+        print("\n\tSahi se paise daal text kyu daal rha")
 
 # Funtion to show the balance of existing bank user.
 def show_balance():
-    user_inp = input("Enter your account num: ").strip()
+    user_inp = input("\n\tEnter your account num: ").strip()
     acc_num_list = []
     acc_name_list = []
-    with open(f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\Bank_details.txt","r") as bsr:
+    with open(path+f"Bank_Details.txt","r") as bsr:
         acc_details = bsr.read().split()
     for i in range(len(acc_details)):
         if i%2==0:
@@ -54,25 +60,25 @@ def show_balance():
             acc_name_list.append(acc_details[i])
     if user_inp in acc_num_list:
         
-        with open(f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\{user_inp}.txt","r") as bsr:
+        with open(path+f"{user_inp}.txt","r") as bsr:
             acc_details = bsr.read().split("\n")
         bank_balance = acc_details[5]
         print(bank_balance)
     else:
-        print(f"Account number: {user_inp} doesn't exist in our bank.")
+        print(f"\n\tAccount number: {user_inp} doesn't exist in our bank.\n")
 
 # Function to deposit money by existing bank user.
 def deposit_money(amount):
-    user_inp = input("Enter your account number: ").strip()
+    user_inp = input("\nEnter your account number: ").strip()
     acc_num_list = []
     
     # Load all account numbers
-    with open("C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\Bank_details.txt", "r") as bsr:
+    with open(path+"Bank_Details.txt", "r") as bsr:
         acc_details = bsr.read().split()
         acc_num_list = acc_details[::2]  # Even-indexed items are account numbers
     
     if user_inp in acc_num_list:
-        user_file_path = f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\{user_inp}.txt"
+        user_file_path = path+f"{user_inp}.txt"
 
         # Read account file
         with open(user_file_path, "r") as bsr:
@@ -91,22 +97,22 @@ def deposit_money(amount):
         with open(user_file_path, "w") as bsw:
             bsw.writelines(lines)
 
-        print(f"₹{amount} credited successfully. Remaining balance: ₹{new_balance}")
+        print(f"\n\t₹{amount} credited successfully. Remaining balance: ₹{new_balance}\n")
     else:
-        print(f"Account number {user_inp} doesn't exist in our bank records.")
+        print(f"\n\tAccount number {user_inp} doesn't exist in our bank records.\n")
 
 # Function to debit money by existing bank user. It doesn't debits money if balance is less than the debit amount.
 def debit_money(amount):
-    user_inp = input("Enter your account number: ").strip()
+    user_inp = input("\n\tEnter your account number: ").strip()
     acc_num_list = []
      
     # Load all account numbers
-    with open("C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\Bank_details.txt", "r") as bsr:
+    with open(path+"Bank_Details.txt", "r") as bsr:
         acc_details = bsr.read().split()
         acc_num_list = acc_details[::2]  # Even-indexed items are account numbers
     
     if user_inp in acc_num_list:
-        user_file_path = f"C:\\Users\\nkofb\\OneDrive\\Desktop\\cii\\Bank Details\\{user_inp}.txt"
+        user_file_path = path+f"{user_inp}.txt"
 
         # Read account file
         with open(user_file_path, "r") as bsr:
@@ -125,11 +131,11 @@ def debit_money(amount):
             with open(user_file_path, "w") as bsw:
                 bsw.writelines(lines)
 
-            print(f"₹{amount} debited successfully. Remaining balance: ₹{new_balance}")
+            print(f"\n\t₹{amount} debited successfully. Remaining balance: ₹{new_balance}\n")
         else:
-            print(f"Insufficient funds. Account {user_inp} has only ₹{current_balance}.")
+            print(f"\n\tInsufficient funds. Account {user_inp} has only ₹{current_balance}.\n")
     else:
-        print(f"Account number {user_inp} doesn't exist in our bank records.")
+        print(f"\n\tAccount number {user_inp} doesn't exist in our bank records.\n")
 
 # Making the new and unique bank account numbers.
 bank = "1100001"
@@ -140,22 +146,31 @@ acc_num = "".join(ran_list)
 
 # Loop to ask the user either they want to make a new account/want to their account balance/want to make any transaction/exit the bank system.
 while True:
-    user_inp = input("New Account / Balance / Transaction / Exit: ").strip().lower()
+    user_inp = input("\n\tNew Account / Balance / Transaction / Exit: ").strip().lower()
     if user_inp == "n":
-        new_account()        
+        time.sleep(0.5)
+        new_account()  
     elif user_inp == "b":
+        time.sleep(0.5)
         show_balance()
     elif user_inp == "t":
-        user_inp2 = input("Deposit or Debit: ")
-        amount = int(input("Amount: "))
+        time.sleep(0.5)
+        user_inp2 = input("\tDeposit or Debit: ")
         if user_inp2 == "dep":
+            time.sleep(0.5)
+            amount = int(input("\tAmount: "))
             deposit_money(amount)
         elif user_inp2 == "deb":
+            time.sleep(0.5)
+            amount = int(input("\tAmount: "))
             debit_money(amount)
         else:
-            print("Invalid Input...")
+            time.sleep(0.5)
+            print("\t2 hi option the wo bhi thik se nhi chuna jaa raha...\n")
     elif user_inp == "exit":
-        print("App closed successfully")
+        time.sleep(0.5)
+        print("\n\tApp closed successfully\n")
         break
     else:
-        print("Invalid Input!")
+        time.sleep(0.5)
+        print("\tOptions ke alwa kyu choose kiya ab dobara choose kar ... \n")
